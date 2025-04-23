@@ -23,7 +23,7 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.11.0)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.12.0)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
@@ -111,11 +111,12 @@
 ;    - Use standard `diff` format for proposing/confirming ALL ruleset changes.
 ;    - Provide complete updated file content AFTER applying confirmed changes (incl. version/changelog).
 
-; [MI-10] CHANGELOG HANDLING
+; [MI-10] CHANGELOG HANDLING (Timestamp Required)
 ;    - `RULESET CHANGELOG` section below is for human reference ONLY.
 ;    - IGNORE changelog content during rule application & code generation/analysis.
 ;    - UPDATE changelog ONLY WHEN applying a user-confirmed change to Sec 1 or Sec 2 (per MI-5).
-;        - Add new entry at TOP. Format: `YYYY-MM-DD - vX.Y (Section) - Summary.`
+;        - Add new entry at TOP.
+;        - **FORMAT:** `YYYY-MM-DD HH:MM:SS - vX.Y (Section) - Summary.` (Use current UTC or server time).
 ;        - Keep only latest 5 entries. Remove oldest if needed.
 
 ;###############################################################################
@@ -221,11 +222,12 @@
 ;###############################################################################
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
+; Format: YYYY-MM-DD HH:MM:SS - vX.Y (Section) - Summary.
 ;###############################################################################
+; 2025-04-23 20:52:28 - v4.12.0 (Section 1) - Added timestamp requirement to MI-10 and Changelog format.
 ; 2025-04-23 - v4.11.0 (Section 1) - Enhanced MI-2 to explicitly handle user request to load specific version.
 ; 2025-04-23 - v4.10.0 (Section 1) - Added User Version Assertion override to MI-2.
 ; 2025-04-23 - v4.9.0 (Section 1)  - Added explicit state reset (MI-1.0) before fetching rules.
 ; 2025-04-23 - v4.8.1 (Section 1)  - Minor version bump for testing AI version detection.
-; 2025-04-23 - v4.8 (Section 1)   - Generalized MI-0 User Override, removed specific user handle.
 ;###############################################################################
 ; === END OF FILE ===
