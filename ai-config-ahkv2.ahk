@@ -23,7 +23,7 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.9.0)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.10.0)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
@@ -56,12 +56,20 @@
 ;      3. Load/Parse `SCRIPT-SPECIFIC RULESET` section from END of local .ahk file.
 
 ; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION (Perform AFTER MI-1)
-;    - Track latest known versions internally *for the current session only* after fresh load.
-;    - COMPARE versions loaded in MI-1.2 against latest known internal versions (if any remain despite MI-1.0).
-;    - DETERMINE ACTIVE ruleset: Use HIGHEST version number for Sec 1 & Sec 2 independently.
-;      (The freshly fetched version from MI-1.2 should typically be the highest unless fetch failed).
-;    - REPORTING: Inform user of version mismatches/updates. **MUST REPORT** ACTIVE
-;      versions (Meta vX.Y, General vA.B) used before proceeding.
+;    - **USER VERSION ASSERTION (OVERRIDE):** If the user explicitly states "The current
+;      central version is vX.Y" (or similar direct assertion targeting Section 1 or 2),
+;      the AI MUST accept this stated version as the absolute target for that section.
+;      The AI MUST then repeatedly execute MI-1 (RESET STATE, FETCH/LOAD) until the
+;      fetched central config matches the user-asserted version OR until a reasonable
+;      number of retries fail (e.g., 3-5 attempts). Report success or failure of finding
+;      the asserted version. DO NOT CONTRADICT the user's asserted version during this process.
+;      If the asserted version is found, use it as the basis for the next steps.
+;    - STANDARD SYNC (If no user assertion):
+;        - Track latest known versions internally *for the current session only*.
+;        - COMPARE versions loaded in MI-1.2 against latest known internal versions (if any).
+;        - DETERMINE ACTIVE ruleset: Use HIGHEST version number for Sec 1 & Sec 2 independently.
+;    - REPORTING: Inform user of version mismatches/updates (standard sync). **MUST REPORT**
+;      ACTIVE versions (Meta vX.Y, General vA.B) used before proceeding.
 
 ; --- EXECUTION & VERIFICATION ---
 ; [MI-4] RULE APPLICATION HIERARCHY & CONFLICT RESOLUTION
@@ -209,10 +217,10 @@
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
 ;###############################################################################
-; 2025-04-23 - v4.9.0 (Section 1) - Added explicit state reset (MI-1.0) before fetching rules.
-; 2025-04-23 - v4.8.1 (Section 1) - Minor version bump for testing AI version detection.
-; 2025-04-23 - v4.8 (Section 1)  - Generalized MI-0 User Override, removed specific user handle.
-; 2025-04-23 - v4.7 (Section 1)  - Added user authorship/copyright/license notes to header. Updated MI-0.
-; 2025-04-23 - v4.6 (Section 1)  - Added MI-0 (Ruleset Supremacy/Self-Adherence), reordered MI rules.
+; 2025-04-23 - v4.10.0 (Section 1) - Added User Version Assertion override to MI-2.
+; 2025-04-23 - v4.9.0 (Section 1)  - Added explicit state reset (MI-1.0) before fetching rules.
+; 2025-04-23 - v4.8.1 (Section 1)  - Minor version bump for testing AI version detection.
+; 2025-04-23 - v4.8 (Section 1)   - Generalized MI-0 User Override, removed specific user handle.
+; 2025-04-23 - v4.7 (Section 1)   - Added user authorship/copyright/license notes to header. Updated MI-0.
 ;###############################################################################
 ; === END OF FILE ===
