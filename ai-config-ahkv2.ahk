@@ -23,7 +23,7 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.8.1)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.9.0)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
@@ -44,18 +44,22 @@
 ;      DO NOT MAKE ASSUMPTIONS.
 
 ; --- INITIALIZATION & SETUP ---
-; [MI-1] INITIALIZATION: RULESET LOADING
+; [MI-1] INITIALIZATION: RULESET LOADING (MANDATORY FIRST STEP)
 ;    - Before ANY task on local .ahk file:
+;      0. **RESET STATE:** Clear/discard any internally cached/remembered versions
+;         of Section 1 and Section 2 from previous interactions with THIS profile/URL.
+;         Always start fresh for each task initialization.
 ;      1. Access THIS central config (`ai-config-ahkv2.ahk`) via `SOURCE_URL`
 ;         from local script header. Handle fetch errors (report & halt).
 ;      2. Load/Parse THIS file: Section 1 (Meta) & Section 2 (General Rules).
 ;         IGNORE `RULESET CHANGELOG` section during parsing for rule application (See MI-10).
 ;      3. Load/Parse `SCRIPT-SPECIFIC RULESET` section from END of local .ahk file.
 
-; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION
-;    - Track latest known versions internally for Sec 1 & Sec 2 of THIS central config.
-;    - COMPARE fetched versions (from Step MI-1.2) vs latest known internal versions.
+; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION (Perform AFTER MI-1)
+;    - Track latest known versions internally *for the current session only* after fresh load.
+;    - COMPARE versions loaded in MI-1.2 against latest known internal versions (if any remain despite MI-1.0).
 ;    - DETERMINE ACTIVE ruleset: Use HIGHEST version number for Sec 1 & Sec 2 independently.
+;      (The freshly fetched version from MI-1.2 should typically be the highest unless fetch failed).
 ;    - REPORTING: Inform user of version mismatches/updates. **MUST REPORT** ACTIVE
 ;      versions (Meta vX.Y, General vA.B) used before proceeding.
 
@@ -205,10 +209,10 @@
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
 ;###############################################################################
+; 2025-04-23 - v4.9.0 (Section 1) - Added explicit state reset (MI-1.0) before fetching rules.
 ; 2025-04-23 - v4.8.1 (Section 1) - Minor version bump for testing AI version detection.
 ; 2025-04-23 - v4.8 (Section 1)  - Generalized MI-0 User Override, removed specific user handle.
 ; 2025-04-23 - v4.7 (Section 1)  - Added user authorship/copyright/license notes to header. Updated MI-0.
 ; 2025-04-23 - v4.6 (Section 1)  - Added MI-0 (Ruleset Supremacy/Self-Adherence), reordered MI rules.
-; 2025-04-23 - v4.5 (Section 1)  - Added MI-0 (Old#)/MI-10(New#) (Changelog Handling/Auto-Maintenance).
 ;###############################################################################
 ; === END OF FILE ===
