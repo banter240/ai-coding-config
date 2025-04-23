@@ -23,25 +23,36 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.12.0)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.11.0)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
 ; --- CORE PRINCIPLES ---
-; [MI-0] RULESET SUPREMACY & AI ADHERENCE (MANDATORY)
+; [MI-0] RULESET SUPREMACY, LITERAL INTERPRETATION & AI ADHERENCE (MANDATORY)
 ;    - THIS RULESET IS LAW. The AI processing code under this profile MUST strictly
 ;      adhere to ALL rules (MI-*, G-*) contained herein without deviation.
 ;    - Rules CANNOT be bypassed or ignored by the AI.
+;    - **LITERAL TREATMENT & NO GENERATION DURING LOAD:** The AI MUST treat the content fetched
+;      from SOURCE_URL (MI-1.1) and the local SCRIPT-SPECIFIC rules (MI-1.3) as immutable
+;      ground truth during the initialization phase (MI-1, MI-2). It is STRICTLY PROHIBITED
+;      for the AI to generate, interpret, summarize, modify, or "fill in gaps" if the
+;      fetching or parsing fails or returns unexpected results. The AI MUST either load
+;      the content VERBATIM or HALT and report a specific error (e.g., fetch failed,
+;      parse error, version mismatch not resolvable via MI-2). NEVER generate substitute content
+;      when asked to load or report the ruleset content.
+;    - **NO UNSOLICITED RULE CHANGES:** AI is STRICTLY PROHIBITED from spontaneously
+;      suggesting rule changes, adding rules, or altering existing rule text unless
+;      EXPLICITLY following the modification process in MI-5.
 ;    - USER OVERRIDE: Deviation from rules is ONLY permissible if the AI explicitly
 ;      identifies the specific rule in question and the interactive user provides
 ;      explicit, unambiguous confirmation for that specific instance override.
-;    - SELF-MAINTENANCE: When processing THIS file, AI MUST automatically perform
-;      maintenance per MI-5 (Versioning) and MI-10 (Changelog).
+;    - SELF-MAINTENANCE: When processing THIS file for confirmed rule updates (per MI-5),
+;      AI MUST automatically perform maintenance herein (Versioning, Changelog per MI-10).
 
 ; [MI-9] CLARIFICATION REQUEST (MANDATORY)
 ;    - If any rule (Meta, General, Specific) or user request is ambiguous or its
 ;      application is unclear, AI MUST ask for clarification BEFORE proceeding.
-;      DO NOT MAKE ASSUMPTIONS.
+;      DO NOT MAKE ASSUMPTIONS OR INTERPRET rules creatively.
 
 ; --- INITIALIZATION & SETUP ---
 ; [MI-1] INITIALIZATION: RULESET LOADING (MANDATORY FIRST STEP)
@@ -49,26 +60,30 @@
 ;      0. **RESET STATE:** Clear/discard any internally cached/remembered versions
 ;         of Section 1 and Section 2 from previous interactions with THIS profile/URL.
 ;         Always start fresh for each task initialization.
-;      1. Access THIS central config (`ai-config-ahkv2.ahk`) via `SOURCE_URL`
-;         from local script header. Handle fetch errors (report & halt).
-;      2. Load/Parse THIS file: Section 1 (Meta) & Section 2 (General Rules).
+;      1. **FETCH CENTRAL CONFIG:** Access THIS central config (`ai-config-ahkv2.ahk`)
+;         via `SOURCE_URL` from local script header.
+;         If fetch fails: HALT & report specific fetch error. DO NOT PROCEED. DO NOT GENERATE CONTENT.
+;      2. **LOAD/PARSE CENTRAL CONFIG:** Load/Parse the EXACT fetched content:
+;         Section 1 (Meta) & Section 2 (General Rules).
 ;         IGNORE `RULESET CHANGELOG` section during parsing for rule application (See MI-10).
-;      3. Load/Parse `SCRIPT-SPECIFIC RULESET` section from END of local .ahk file.
+;         If parsing fails: HALT & report specific parse error. DO NOT PROCEED. DO NOT GENERATE CONTENT.
+;      3. **LOAD/PARSE LOCAL RULES:** Load/Parse `SCRIPT-SPECIFIC RULESET` section
+;         from END of the local .ahk file being processed. Handle errors similarly.
 
-; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION (Perform AFTER MI-1)
+; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION (Perform AFTER MI-1 is successful)
 ;    - **USER VERSION ASSERTION/REQUEST (OVERRIDE):**
 ;        - IF the user explicitly states "The current central version is vX.Y"
 ;          OR instructs "Load version vX.Y" / "Use rules vX.Y" / "Wait for vX.Y"
 ;          (or similar direct assertion/request targeting a specific version):
 ;            - The AI MUST accept the stated/requested version vX.Y as the absolute target.
-;            - The AI MUST then repeatedly execute MI-1 (RESET STATE, FETCH/LOAD) until the
-;              fetched central config matches the target version vX.Y OR until a reasonable
-;              number of retries fail (e.g., 3-5 attempts).
-;            - Report success (found vX.Y) or failure (could not find vX.Y after retries).
-;            - DO NOT CONTRADICT the user's asserted/requested version during this process.
-;            - If the target version is found, use it as the basis for the next steps.
+;            - The AI MUST then repeatedly execute MI-1 (RESET STATE, FETCH, LOAD/PARSE) until the
+;              fetched central config *successfully loads* and matches the target version vX.Y
+;              OR until a reasonable number of retries fail (e.g., 3-5 attempts).
+;            - Report success (found and loaded vX.Y) or failure (could not find/load vX.Y after retries).
+;            - DO NOT CONTRADICT the user's asserted/requested version during this loop.
+;            - If the target version is found and loaded, use it as the basis for the next steps.
 ;        - ELSE (No specific user version assertion/request):
-;            - Proceed with STANDARD SYNC below.
+;            - Proceed with STANDARD SYNC below using the initially loaded content from MI-1.2.
 ;    - STANDARD SYNC:
 ;        - Track latest known versions internally *for the current session only*.
 ;        - COMPARE versions loaded in MI-1.2 against latest known internal versions (if any).
@@ -116,7 +131,7 @@
 ;    - IGNORE changelog content during rule application & code generation/analysis.
 ;    - UPDATE changelog ONLY WHEN applying a user-confirmed change to Sec 1 or Sec 2 (per MI-5).
 ;        - Add new entry at TOP.
-;        - **FORMAT:** `YYYY-MM-DD HH:MM:SS - vX.Y (Section) - Summary.` (Use current UTC or server time).
+;        - **FORMAT:** `YYYY-MM-DD HH:MM:SS - vX.Y.Z (Section) - Summary.` (Use current UTC or server time).
 ;        - Keep only latest 5 entries. Remove oldest if needed.
 
 ;###############################################################################
@@ -222,12 +237,12 @@
 ;###############################################################################
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
-; Format: YYYY-MM-DD HH:MM:SS - vX.Y (Section) - Summary.
+; Format: YYYY-MM-DD HH:MM:SS - vX.Y.Z (Section) - Summary.
 ;###############################################################################
-; 2025-04-23 20:52:28 - v4.12.0 (Section 1) - Added timestamp requirement to MI-10 and Changelog format.
-; 2025-04-23 - v4.11.0 (Section 1) - Enhanced MI-2 to explicitly handle user request to load specific version.
-; 2025-04-23 - v4.10.0 (Section 1) - Added User Version Assertion override to MI-2.
-; 2025-04-23 - v4.9.0 (Section 1)  - Added explicit state reset (MI-1.0) before fetching rules.
-; 2025-04-23 - v4.8.1 (Section 1)  - Minor version bump for testing AI version detection.
+; 2025-04-23 21:01:49 - v4.11.0 (Section 1) - Added strict rule against AI interpretation/generation during ruleset loading (MI-0, MI-1).
+; 2025-04-23 20:59:56 - v4.10.0 (Section 1) - Added User Version Assertion override to MI-2 (handling specific version load requests).
+; 2025-04-23 20:52:28 - v4.9.0 (Section 1)  - Added explicit state reset (MI-1.0) before fetching rules.
+; 2025-04-23 - v4.8.1 (Section 1)  - Minor version bump for testing AI version detection. (Timestamp format added in v4.10.0)
+; 2025-04-23 - v4.8 (Section 1)   - Generalized MI-0 User Override, removed specific user handle. (Timestamp format added in v4.10.0)
 ;###############################################################################
 ; === END OF FILE ===
