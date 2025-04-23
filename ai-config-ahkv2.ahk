@@ -8,11 +8,11 @@
 ;               Serves as the central, version-controlled source.
 ;
 ; Concept Origin: The overall concept, structure, and iterative refinement of
-;               this ruleset system originate from the user ([banter240]).
+;               this ruleset system originate from the user (banter240).
 ;               AI assistance was used for formatting, suggestions, and generation
 ;               based on user-provided examples and directives.
 ;
-; Copyright:    Copyright (c) 2025 [banter240]
+; Copyright:    Copyright (c) 2025 banter240
 ; License:      This ruleset file is licensed under the GNU General Public License v3.0.
 ;               See the LICENSE file in the root of the repository for details.
 ;
@@ -23,7 +23,7 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.8)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.8.1)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
@@ -205,10 +205,10 @@
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
 ;###############################################################################
-; 2025-04-23 - v4.8 (Section 1) - Generalized MI-0 User Override, removed specific user handle.
-; 2025-04-23 - v4.7 (Section 1) - Added user authorship/copyright/license notes to header. Updated MI-0.
-; 2025-04-23 - v4.6 (Section 1) - Added MI-0 (Ruleset Supremacy/Self-Adherence), reordered MI rules.
-; 2025-04-23 - v4.5 (Section 1) - Added MI-0 (Old#)/MI-10(New#) (Changelog Handling/Auto-Maintenance).
-; 2025-04-23 - v4.4 (Section 1) - Refined rules for AI clarity, removed Origin/redundancy, added MI-10/Changelog placeholders.
+; 2025-04-23 - v4.8.1 (Section 1) - Minor version bump for testing AI version detection.
+; 2025-04-23 - v4.8 (Section 1)  - Generalized MI-0 User Override, removed specific user handle.
+; 2025-04-23 - v4.7 (Section 1)  - Added user authorship/copyright/license notes to header. Updated MI-0.
+; 2025-04-23 - v4.6 (Section 1)  - Added MI-0 (Ruleset Supremacy/Self-Adherence), reordered MI rules.
+; 2025-04-23 - v4.5 (Section 1)  - Added MI-0 (Old#)/MI-10(New#) (Changelog Handling/Auto-Maintenance).
 ;###############################################################################
 ; === END OF FILE ===
