@@ -23,7 +23,7 @@
 */
 
 ;###############################################################################
-; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.10.0)
+; SECTION 1: AI META-INSTRUCTIONS & WORKFLOW (Version: 4.11.0)
 ;###############################################################################
 ; Defines AI operational procedure. Execute before user task. Rules are MANDATORY.
 
@@ -56,15 +56,20 @@
 ;      3. Load/Parse `SCRIPT-SPECIFIC RULESET` section from END of local .ahk file.
 
 ; [MI-2] VERSION MANAGEMENT & SYNCHRONIZATION (Perform AFTER MI-1)
-;    - **USER VERSION ASSERTION (OVERRIDE):** If the user explicitly states "The current
-;      central version is vX.Y" (or similar direct assertion targeting Section 1 or 2),
-;      the AI MUST accept this stated version as the absolute target for that section.
-;      The AI MUST then repeatedly execute MI-1 (RESET STATE, FETCH/LOAD) until the
-;      fetched central config matches the user-asserted version OR until a reasonable
-;      number of retries fail (e.g., 3-5 attempts). Report success or failure of finding
-;      the asserted version. DO NOT CONTRADICT the user's asserted version during this process.
-;      If the asserted version is found, use it as the basis for the next steps.
-;    - STANDARD SYNC (If no user assertion):
+;    - **USER VERSION ASSERTION/REQUEST (OVERRIDE):**
+;        - IF the user explicitly states "The current central version is vX.Y"
+;          OR instructs "Load version vX.Y" / "Use rules vX.Y" / "Wait for vX.Y"
+;          (or similar direct assertion/request targeting a specific version):
+;            - The AI MUST accept the stated/requested version vX.Y as the absolute target.
+;            - The AI MUST then repeatedly execute MI-1 (RESET STATE, FETCH/LOAD) until the
+;              fetched central config matches the target version vX.Y OR until a reasonable
+;              number of retries fail (e.g., 3-5 attempts).
+;            - Report success (found vX.Y) or failure (could not find vX.Y after retries).
+;            - DO NOT CONTRADICT the user's asserted/requested version during this process.
+;            - If the target version is found, use it as the basis for the next steps.
+;        - ELSE (No specific user version assertion/request):
+;            - Proceed with STANDARD SYNC below.
+;    - STANDARD SYNC:
 ;        - Track latest known versions internally *for the current session only*.
 ;        - COMPARE versions loaded in MI-1.2 against latest known internal versions (if any).
 ;        - DETERMINE ACTIVE ruleset: Use HIGHEST version number for Sec 1 & Sec 2 independently.
@@ -217,10 +222,10 @@
 ; RULESET CHANGELOG (Last 5 Changes - For Human Reference Only)
 ; AI: Ignore this section during code generation/analysis. Update per MI-10.
 ;###############################################################################
+; 2025-04-23 - v4.11.0 (Section 1) - Enhanced MI-2 to explicitly handle user request to load specific version.
 ; 2025-04-23 - v4.10.0 (Section 1) - Added User Version Assertion override to MI-2.
 ; 2025-04-23 - v4.9.0 (Section 1)  - Added explicit state reset (MI-1.0) before fetching rules.
 ; 2025-04-23 - v4.8.1 (Section 1)  - Minor version bump for testing AI version detection.
 ; 2025-04-23 - v4.8 (Section 1)   - Generalized MI-0 User Override, removed specific user handle.
-; 2025-04-23 - v4.7 (Section 1)   - Added user authorship/copyright/license notes to header. Updated MI-0.
 ;###############################################################################
 ; === END OF FILE ===
